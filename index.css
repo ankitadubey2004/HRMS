@@ -1,0 +1,56 @@
+.hrdash {
+  position: absolute;
+  display: inline-block;
+      left: -10px;
+    top: 5px;
+  display: flex; /* NEW: Make HR and DASH sit side by side */
+  align-items: center;
+  gap: 8px; /* optional spacing between HR and DASH */
+  width: auto;
+  height: 98px;
+  font-size: 77px;
+  color: #fff;
+}
+
+.dash a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.group-child {
+  	position: absolute;
+  	top: 94.5px;
+  	left: -2.5px;
+  	border-top: 5px solid #597df8;
+  	box-sizing: border-box;
+  	width: 231px;
+  	height: 5px;
+}
+.group-item {
+  	position: absolute;
+  	top: 80px;
+  	left: 225px;
+  	border-radius: 50%;
+  	background-color: #597df8;
+  	width: 11px;
+  	height: 11px;
+}
+.hrdash-parent {
+  	position: absolute;
+  	top: calc(50% - 49px);
+  	left: calc(50% - 113px);
+  	width: 236px;
+  	height: 98px;
+}
+.enter {
+  	width: 100%;
+  	position: relative;
+  	background: linear-gradient(180deg, #597df8, #344a92);
+  	height: 896px;
+  	overflow: hidden;
+  	text-align: left;
+  	font-size: 77px;
+  	color: #597df8;
+  	font-family: 'Anton SC';
+}
+

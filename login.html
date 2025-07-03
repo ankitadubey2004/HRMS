@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login - HRDASH</title>
+    <link rel="stylesheet" href="login.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="top-bar">
+            <h1 class="logo-title">
+                <span class="logo-highlight">HR</span><span class="logo-normal">DASH</span>
+            </h1>
+            <p class="tagline">Weaving people and culture together</p>
+        </div>
+        <form id="loginForm">
+            <label for="role">User Type</label>
+            <select id="role" name="role" required>
+                <option value="">Select Role</option>
+                <option value="Admin">Admin</option>
+                <option value="HR">HR</option>
+                <option value="Employee">Employee</option>
+            </select>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required />
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required />
+
+            <div class="forget-password">
+                <a href="#">Forgot password?</a>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+
+</html>

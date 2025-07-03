@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <link rel="stylesheet" href="loginAd.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton SC:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
+</head>
+
+<body>
+     <div class="login">
+    <!-- Decorative Shapes -->
+    <div class="login-child"></div>
+    <div class="login-item"></div>
+    <div class="login-inner"></div>
+    <div class="ellipse-div"></div>
+    <div class="login-child1"></div>
+    <div class="login-child2"></div>
+
+    <!-- HRDASH Title -->
+    <div class="hrdash-parent">
+      <div class="hrdash" style="font-size: 30px;">
+        <span style="color: #597df8;">HR</span><span class="dash"><a href="#" style="color: white; text-decoration: none;">DASH</a></span>
+      </div>
+      <div class="group-child"></div>
+      <div class="group-item"></div>
+    </div>
+
+    <!-- Welcome Text -->
+    <b class="welcome">Welcome.</b>
+    <div class="weaving-people-and">Weaving people and culture together</div>
+    <div class="hello-there-login">Hello there, login to continue</div>
+
+    <!-- FORM START -->
+    <form id="loginForm">
+      <!-- User Type Dropdown -->
+      <label class="user-type">User Type</label>
+      <div class="dropdown">
+        <button type="button" onclick="toggleDropdown()" class="dropbtn">
+          <span id="selectedRole">Select Role</span>
+          <svg id="arrowIcon" class="arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="dropdown-content" id="myDropdown">
+          <a href="#" onclick="event.preventDefault(); selectRole('Admin')">Admin</a>
+          <a href="#" onclick="event.preventDefault(); selectRole('HR')">HR</a>
+          <a href="#" onclick="event.preventDefault(); selectRole('Employee')">Employee</a>
+        </div>
+        <input type="hidden" id="role" name="role" />
+      </div>
+
+      <!-- Email Field -->
+      <b class="email">Email</b>
+      <div class="rectangle-div"></div>
+      <input type="email" id="email" name="email" placeholder="Your email" required
+        style="position: absolute; top: 346px; left: 38px; width: 338px; padding: 10px; font-size: 14px; border: none; background: transparent; outline: none; color: black;" />
+
+      <!-- Password Field -->
+      <b class="password">Password</b>
+      <div class="login-child4"></div>
+      <input type="password" id="password" name="password" placeholder="Your password" required autocomplete="current-password"
+  style="position: absolute; top: 438px; left: 38px; width: 338px; padding: 10px; font-size: 14px; border: none; background: transparent; outline: none; color: black;" />
+
+      <div class="forget-password">Forget password?</div>
+
+      <!-- Login Button -->
+      <div class="login-child5"></div>
+      <button type="submit"
+        style="position: absolute; top: 530px; left: 160px; background: none; border: none; color: white; font-weight: 600; font-size: 16px; cursor: pointer;">Login</button>
+    </form>
+  </div>
+
+    <!-- JavaScript -->
+    <script src="loginAd.js"></script>
+</body>
+
+</html>

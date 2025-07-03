@@ -1,0 +1,183 @@
+/* Container adjustments */
+.login {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(0.24deg, #597df8, #344a92);
+  border-radius: 15px;
+  padding: 40px 30px 60px;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  height: 800px;
+}
+
+/* Decorative shapes - keep as is or tweak opacity for subtle effect */
+.login-child, .login-item, .login-inner, .ellipse-div, .login-child1, .login-child2 {
+  /* Keep your original styles */
+  opacity: 0.06; /* Slightly lighter for less distraction */
+}
+
+/* Title HRDASH */
+.hrdash-parent {
+  position: relative;
+  margin: 0 auto 25px;
+  width: max-content;
+  font-family: 'Anton SC', sans-serif;
+  font-size: 34px;
+  text-align: center;
+  color: #597df8;
+}
+
+.hrdash-parent .dash a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.hrdash-parent .dash a:hover {
+  color: #a3b0ff;
+}
+
+/* Welcome text */
+.welcome {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.weaving-people-and {
+  font-size: 14px;
+  font-weight: 600;
+  color: #c0c6d9;
+  margin-bottom: 30px;
+}
+
+/* Form title */
+.login p {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #e0e4ff;
+}
+
+/* Form Styles */
+form#registerEmployeeForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+form label {
+  font-weight: 600;
+  font-size: 16px;
+  color: #e0e4ff;
+  margin-bottom: 6px;
+}
+
+form input[type="email"],
+form input[type="password"] {
+  padding: 14px 16px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 2px solid #8ba3ff;
+  background-color: #e9ecff;
+  color: #222;
+  transition: border-color 0.3s ease;
+}
+
+form input[type="email"]:focus,
+form input[type="password"]:focus {
+  outline: none;
+  border-color: #3348ff;
+  box-shadow: 0 0 8px rgba(51, 72, 255, 0.4);
+}
+
+/* Submit button */
+form button[type="submit"] {
+  background-color: #4c6ef5;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(76, 110, 245, 0.6);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form button[type="submit"]:hover {
+  background-color: #3b58d9;
+  box-shadow: 0 8px 20px rgba(59, 88, 217, 0.7);
+}
+
+/* Logout button style */
+.logout {
+  margin-top: 25px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: #b0b7cc;
+  font-size: 15px;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.logout:hover {
+  color: #f0f3ff;
+}
+.top-bar {
+  display: flex;
+  position: relative;
+  top: -30px;
+  justify-content: space-between; /* push items to edges */
+  align-items: center;
+  padding: 1rem 0;
+  color: white;
+}
+
+.arrow-btn {
+  background-color: #5d8dc2;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: background-color 0.3s ease;
+}
+
+.arrow-btn:hover {
+  background-color: white;
+}
+
+.cart-icon {
+  font-size: 1.8rem;
+  color: white;
+  cursor: pointer;
+}
+
+
+/* Responsive tweak */
+/* @media (max-width: 450px) {
+  .login {
+    padding: 30px 20px 50px;
+    width: 95%;
+  }
+
+  .hrdash-parent {
+    font-size: 28px;
+  }
+
+  form button[type="submit"] {
+    font-size: 16px;
+    padding: 12px;
+  }
+} */

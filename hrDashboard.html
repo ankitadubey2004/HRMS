@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HR Dashboard</title>
+      <link rel="stylesheet" href="hrDashboard.css" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  
+</head>
+<body>
+
+<div class="dashboard">
+  <div class="user-header">
+    <div>
+      <strong>Natasha K.</strong><br>
+      <small>HR Manager</small>
+    </div>
+    <div>🔍 🔔</div>
+  </div>
+
+  <div class="date-bar" id="dateBar">
+    <!-- Dates will be injected here dynamically -->
+  </div>
+
+  <div class="cards">
+    <div class="card purple">Number of Employees <br><span id="empCount">...</span></div>
+    <div class="card orange">On Leave <br><span id="leaveCount">...</span></div>
+    <div class="card green">New Joined <br><span id="newCount">...</span></div>
+    <div class="card blue">Upcoming Holiday <br><span id="holidayCount">4</span></div>
+  </div>
+
+  <div class="section-title">Leave Request</div>
+  <div class="leave-requests" id="leaveRequests">
+    <!-- Leave requests will be injected here -->
+  </div>
+
+  <div class="section-title">Task</div>
+  <div class="task-list">
+    <div class="task-item">Review 3 Pending Leave Requests</div>
+    <div class="task-item">Schedule Interviews for Sales Team</div>
+    <div class="task-item">Send Monthly Attendance Summary</div>
+  </div>
+</div>
+
+<nav id="section-footer-nav" class="footer-nav">
+  <a href="hrDashboard.html" class="footer-nav__item footer-nav__item--active">
+    <i class="fa-solid fa-house-chimney footer-nav__icon"></i>
+    <span class="footer-nav__text">Home</span>
+  </a>
+  <a href="attendance.html" class="footer-nav__item">
+    <i class="fa-solid fa-calendar-days footer-nav__icon"></i>
+    <span class="footer-nav__text">Attendance</span>
+  </a>
+  <a href="leave.html" class="footer-nav__item">
+    <i class="fa-solid fa-clipboard-list footer-nav__icon"></i>
+    <span class="footer-nav__text">Leave</span>
+  </a>
+  <a href="performance.html" class="footer-nav__item">
+    <i class="fa-solid fa-chart-line footer-nav__icon"></i>
+    <span class="footer-nav__text">Performance</span>
+  </a>
+  <a href="profile.html" class="footer-nav__item">
+    <i class="fa-solid fa-user footer-nav__icon"></i>
+    <span class="footer-nav__text">Profile</span>
+  </a>
+</nav>
+
+
+<script src="hrDashboard.js"></script>
+
+</body>
+</html>

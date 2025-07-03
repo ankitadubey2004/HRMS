@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register HR - Admin Panel</title>
+  <link rel="stylesheet" href="registerHr.css">
+  <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Inter:wght@400;600&display=swap"
+    rel="stylesheet" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="top-bar">
+      <button class="arrow-btn" onclick="window.location.href='loginAd.html'">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+      <i class="fas fa-shopping-cart cart-icon" style="cursor: pointer;"
+        onclick="window.location.href='checkout.html'"></i>
+    </div>
+    <h1>RegisterHR</h1>
+    
+    <form id="registerHrForm">
+      <label for="hrEmail">Email</label>
+      <input type="email" id="hrEmail" name="hrEmail" placeholder="Enter HR email" required />
+
+      <label for="hrPassword">Password</label>
+      <input type="password" id="hrPassword" name="hrPassword" placeholder="Enter password" required />
+
+      <button type="submit">Register HR</button>
+    </form>
+  </div>
+
+  <script src="registerHr.js"></script>
+</body>
+
+</html>
