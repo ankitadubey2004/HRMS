@@ -1,4 +1,4 @@
-// 
+// Dropdown toggle
 function toggleDropdown() {
   const dropdown = document.getElementById("myDropdown");
   const arrow = document.getElementById("arrowIcon");
@@ -13,6 +13,7 @@ function selectRole(role) {
   document.getElementById("arrowIcon").classList.remove("rotate");
 }
 
+// Close dropdown when clicked outside
 window.onclick = function (e) {
   if (!e.target.closest('.dropdown')) {
     document.getElementById("myDropdown").classList.remove("show");
@@ -20,12 +21,14 @@ window.onclick = function (e) {
   }
 };
 
+// Default dropdown text on page load
 window.onload = () => {
   if (!document.getElementById("role").value) {
     document.getElementById("selectedRole").innerText = "Select Role";
   }
 };
 
+// 🔐 Login Form Submission
 document.getElementById("loginForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
@@ -44,7 +47,6 @@ document.getElementById("loginForm").addEventListener("submit", async function (
   }
 
   const loginUrl = "https://hrms-project-8b8h.onrender.com/auth/login";
-  let redirectPage = "";
 
   try {
     const res = await fetch(loginUrl, {
@@ -58,15 +60,20 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     if (res.ok) {
       alert("Login successful!");
 
-      if (data.token) localStorage.setItem("token", data.token);
+      // ✅ Save token to localStorage for future authenticated requests
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userRole", role); // optional: save role too
+      }
 
-      // 🚀 Redirect logic based on role and first login
+      // 🔁 Redirect logic
+      let redirectPage = "";
       if (role === "Admin") {
         redirectPage = "registerHr.html";
       } else if (role === "HR") {
         redirectPage = data.isFirstLogin ? "registerEmployee.html" : "hrDashboard.html";
       } else if (role === "Employee") {
-        redirectPage = data.isFirstLogin ? "completeProfile.html" : "empDashboard.html";
+        redirectPage = data.isFirstLogin ? "completeProfile.html" : "employeeDash.html";
       }
 
       window.location.href = redirectPage;

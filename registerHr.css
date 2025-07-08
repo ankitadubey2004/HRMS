@@ -10,8 +10,8 @@ body {
 }
 
 .container {
-  background: #597df8;
-  padding: 50px 20px;
+  background: linear-gradient(0.24deg, #597df8, #344a92);
+  padding: 60px 30px;
   border-radius: 15px;
   width: 380px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
@@ -102,6 +102,7 @@ button:hover {
   align-items: center;
   gap: 0.3rem;
   transition: background-color 0.3s ease;
+  width: 100px;
 }
 
 .arrow-btn:hover {
