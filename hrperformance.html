@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HR Performance Dashboard</title>
+  <link rel="stylesheet" href="hrperformance.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="tab-container">
+      <button class="tab active">Employee Performance</button>
+      <button class="tab" onclick="alert('My Performance tab - optional')">My Performance</button>
+    </div>
+
+    <h3>Overall Performance Score</h3>
+    <div class="chart-container">
+      <canvas id="performanceChart"></canvas>
+    </div>
+
+    <div class="score-labels">
+      <span><span class="dot high"></span> High</span>
+      <span><span class="dot moderate"></span> Moderate</span>
+      <span><span class="dot low"></span> Low</span>
+    </div>
+
+    <div class="review-status">
+      <div class="box orange">Reviews Pending <span id="pending-count">--</span></div>
+      <div class="box blue">Reviews Completed <span id="completed-count">--</span></div>
+    </div>
+
+    <div class="performer-tabs">
+      <button onclick="filter('high')">High Performers</button>
+      <button onclick="filter('moderate')">Moderate Performers</button>
+      <button onclick="filter('low')">Low Performers</button>
+    </div>
+
+    <div class="employee-list" id="employeeList">
+      <!-- Employee cards will go here -->
+    </div>
+    <nav class="footer-nav">
+    <a href="hrDashboard.html" class="footer-nav__item footer-nav__item--active">
+      <i class="fa-solid fa-house-chimney footer-nav__icon"></i>
+      <span class="footer-nav__text">Home</span>
+    </a>
+    <a href="hrattendance.html" class="footer-nav__item">
+      <i class="fa-solid fa-calendar-days footer-nav__icon"></i>
+      <span class="footer-nav__text">Attendance</span>
+    </a>
+    <a href="hrleave.html" class="footer-nav__item">
+      <i class="fa-solid fa-clipboard-list footer-nav__icon"></i>
+      <span class="footer-nav__text">Leave</span>
+    </a>
+    <a href="hrperformance.html" class="footer-nav__item">
+      <i class="fa-solid fa-chart-line footer-nav__icon"></i>
+      <span class="footer-nav__text">Performance</span>
+    </a>
+    <a href="hrprofile.html" class="footer-nav__item">
+      <i class="fa-solid fa-user footer-nav__icon"></i>
+      <span class="footer-nav__text">Profile</span>
+    </a>
+  </nav>
+  </div>
+
+
+  <script src="hrperformance.js"></script>
+</body>
+</html>
