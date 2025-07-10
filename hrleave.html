@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HR Leave Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="hrleave.css">
+  
+</head>
+<body>
+
+  <!-- <div class="top-bar">
+    <h2>Leave</h2>
+    <div class="toggle-buttons">
+      <button>My Leave</button>
+      <button class="active">Employee Leave</button>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card purple">
+      <div>Total Requests</div>
+      <strong id="total">--</strong>
+    </div>
+    <div class="card green">
+      <div>Requests Approved</div>
+      <strong id="approved">--</strong>
+    </div>
+    <div class="card orange">
+      <div>Requests Pending</div>
+      <strong id="pending">--</strong>
+    </div>
+    <div class="card red">
+      <div>Rejected Requests</div>
+      <strong id="rejected">--</strong>
+    </div>
+  </div>
+
+  <div class="requests">
+    <h3>Leave Requests</h3>
+    <div id="leaveList"></div>
+  </div> -->
+  <div class="container">
+        <h2>Leave</h2>
+
+    <div class="tabs">
+      <div class="tab">My Leave</div>
+      <div class="tab active">Employee Leave</div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <h2 id="total">0</h2>
+        <p>Total Requests</p>
+      </div>
+      <div class="stat">
+        <h2 id="approved">0</h2>
+        <p>Approved</p>
+      </div>
+      <div class="stat">
+        <h2 id="pending">0</h2>
+        <p>Pending</p>
+      </div>
+      <div class="stat">
+        <h2 id="rejected">0</h2>
+        <p>Rejected</p>
+      </div>
+    </div>
+
+    <div id="leaveList"></div>
+    <nav class="footer-nav">
+    <a href="hrDashboard.html" class="footer-nav__item footer-nav__item--active">
+      <i class="fa-solid fa-house-chimney footer-nav__icon"></i>
+      <span class="footer-nav__text">Home</span>
+    </a>
+    <a href="hrattendance.html" class="footer-nav__item">
+      <i class="fa-solid fa-calendar-days footer-nav__icon"></i>
+      <span class="footer-nav__text">Attendance</span>
+    </a>
+    <a href="hrleave.html" class="footer-nav__item">
+      <i class="fa-solid fa-clipboard-list footer-nav__icon"></i>
+      <span class="footer-nav__text">Leave</span>
+    </a>
+    <a href="hrperformance.html" class="footer-nav__item">
+      <i class="fa-solid fa-chart-line footer-nav__icon"></i>
+      <span class="footer-nav__text">Performance</span>
+    </a>
+    <a href="hrprofile.html" class="footer-nav__item">
+      <i class="fa-solid fa-user footer-nav__icon"></i>
+      <span class="footer-nav__text">Profile</span>
+    </a>
+  </nav>
+
+  <script src="hrleave.js"></script>
+
+</body>
+</html>
