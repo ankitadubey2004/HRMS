@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile</title>
+  <link rel="stylesheet" href="empprofile.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <i class="fa-solid fa-user-circle"></i>
+    </div>
+
+    <h2>My Profile</h2>
+
+    <form id="profileForm" class="form-card">
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Your name" required />
+
+      <label for="phone">Phone</label>
+      <input type="text" id="phone" placeholder="Phone number" />
+
+      <label for="department">Department</label>
+      <input type="text" id="department" placeholder="Department" />
+
+      <label for="position">Position</label>
+      <input type="text" id="position" placeholder="Position" />
+
+      <button type="submit">Update Profile</button>
+    </form>
+     <nav class="footer-nav">
+    <a href="hrDashboard.html" class="footer-nav__item footer-nav__item--active">
+      <i class="fa-solid fa-house-chimney footer-nav__icon"></i>
+      <span class="footer-nav__text">Home</span>
+    </a>
+    <a href="hrattendance.html" class="footer-nav__item">
+      <i class="fa-solid fa-calendar-days footer-nav__icon"></i>
+      <span class="footer-nav__text">Attendance</span>
+    </a>
+    <a href="hrleave.html" class="footer-nav__item">
+      <i class="fa-solid fa-clipboard-list footer-nav__icon"></i>
+      <span class="footer-nav__text">Leave</span>
+    </a>
+    <a href="hrperformance.html" class="footer-nav__item">
+      <i class="fa-solid fa-chart-line footer-nav__icon"></i>
+      <span class="footer-nav__text">Performance</span>
+    </a>
+    <a href="hrprofile.html" class="footer-nav__item">
+      <i class="fa-solid fa-user footer-nav__icon"></i>
+      <span class="footer-nav__text">Profile</span>
+    </a>
+  </nav>
+  </div>
+
+  <script src="empprofile.js"></script>
+</body>
+</html>
