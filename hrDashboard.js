@@ -19,6 +19,21 @@ function renderDateBar() {
     dateBar.appendChild(div);
   }
 }
+let loggedInUser = null;
+
+async function setLoggedInUserInfo() {
+  try {
+    const res = await fetch("https://hrms-project-8b8h.onrender.com/profile/me", { headers });
+    if (!res.ok) throw new Error("Profile fetch failed");
+    loggedInUser = await res.json();
+
+    document.querySelector(".user-header strong").innerText = loggedInUser.name || "HR User";
+  } catch (err) {
+    console.error("❌ Error fetching profile:", err);
+  }
+}
+
+
 
 async function fetchDashboardData() {
   try {
@@ -293,3 +308,4 @@ fetchDashboardData();
 setupModal();
 setupNoteModal();
 
+setLoggedInUserInfo();

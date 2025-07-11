@@ -2,6 +2,13 @@ document.addEventListener('DOMContentLoaded', fetchPerformance);
 
 let scoreChartInstance = null;
 
+function getCurrentMonthRange() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+  return { start, end };
+}
+
 async function fetchPerformance() {
   const token = localStorage.getItem('token');
   const headers = {
@@ -9,8 +16,13 @@ async function fetchPerformance() {
     'Content-Type': 'application/json'
   };
 
+  const loader = createLoader();
+  document.querySelector('.container').appendChild(loader);
+
+  const { start, end } = getCurrentMonthRange();
+
   try {
-    const response = await fetch('https://hrms-project-8b8h.onrender.com/performance/me?start=2025-07-01&end=2025-07-07', {
+    const response = await fetch(`https://hrms-project-8b8h.onrender.com/performance/me?start=${start}&end=${end}`, {
       method: 'GET',
       headers
     });
@@ -18,8 +30,9 @@ async function fetchPerformance() {
     if (!response.ok) throw new Error('Failed to fetch');
 
     const data = await response.json();
+    loader.remove();
 
-    // Dynamically populate data
+    // Update UI with fetched data
     document.getElementById('empName').innerText = data.name || 'Employee';
     document.getElementById('empRole').innerText = data.role || 'Employee Role';
     document.getElementById('lastReview').innerText = `Last review: ${data.lastReviewDate || '--'}`;
@@ -36,7 +49,8 @@ async function fetchPerformance() {
     drawChart(score);
   } catch (err) {
     console.error('Error fetching performance:', err);
-    alert('Failed to load performance data. Please try again later.');
+    loader.remove();
+    showError("Unable to load performance data. Please try again later.");
   }
 }
 
@@ -44,10 +58,15 @@ function drawChart(score) {
   const canvas = document.getElementById('scoreChart');
   const ctx = canvas.getContext('2d');
 
-  // Create gradient
+  // Score-based dynamic color
+  let mainColor = '#00c6ff';
+  if (score < 60) mainColor = '#f44336'; // red
+  else if (score < 80) mainColor = '#ffc107'; // yellow
+  else mainColor = '#4caf50'; // green
+
   const gradient = ctx.createLinearGradient(0, 0, 120, 120);
-  gradient.addColorStop(0, '#4a6cf7');
-  gradient.addColorStop(1, '#00c6ff');
+  gradient.addColorStop(0, mainColor);
+  gradient.addColorStop(1, '#e0e0e0');
 
   if (scoreChartInstance) scoreChartInstance.destroy();
 
@@ -56,7 +75,7 @@ function drawChart(score) {
     data: {
       datasets: [{
         data: [score, 100 - score],
-        backgroundColor: [gradient, '#e0e0e0'],
+        backgroundColor: [mainColor, '#e0e0e0'],
         borderWidth: 0
       }]
     },
@@ -70,4 +89,23 @@ function drawChart(score) {
       }
     }
   });
+}
+
+function createLoader() {
+  const loader = document.createElement('div');
+  loader.innerText = 'Loading...';
+  loader.style.textAlign = 'center';
+  loader.style.margin = '20px 0';
+  loader.style.fontWeight = 'bold';
+  loader.style.color = '#555';
+  return loader;
+}
+
+function showError(message) {
+  const errorDiv = document.createElement('div');
+  errorDiv.innerText = message;
+  errorDiv.style.color = 'red';
+  errorDiv.style.margin = '20px';
+  errorDiv.style.textAlign = 'center';
+  document.querySelector('.container').appendChild(errorDiv);
 }
