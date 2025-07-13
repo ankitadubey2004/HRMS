@@ -379,3 +379,101 @@
   color: #444;
   line-height: 1.3;
 }
+
+/* @media (min-width: 600px) {
+  .cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .dashboard {
+    max-width: 700px;
+    padding: 2rem;
+  }
+
+  .date-bar {
+    justify-content: space-around;
+  }
+
+  .date {
+    width: 65px;
+    font-size: 14px;
+  }
+   .task-card {
+    padding: 10px 12px;
+    font-size: 0.5rem;
+    border-left-width: 4px;
+  }
+   .task-card strong {
+    font-size: 0.5rem;
+  }
+
+  .task-card span,
+  .status-badge {
+    font-size: 0.8rem;
+  }
+
+  .modal-content,
+  .modal-content1 {
+    max-width: 90%;
+    padding: 25px;
+  }
+
+  .note-item{
+    font-size: 1rem;
+  }
+}
+
+/
+@media (min-width: 900px) {
+  .cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .dashboard {
+    max-width: 1000px;
+    padding: 2rem 3rem;
+  }
+
+  .footer-nav {
+    max-width: 1000px;
+    padding: 1rem 2rem;
+  }
+
+  .footer-nav__item {
+    font-size: 16px;
+  }
+
+  .modal-content,
+  .modal-content1 {
+    max-width: 500px;
+    padding: 30px;
+  }
+
+  .note-item,
+  .task-card {
+    padding: 12px 15px;
+    font-size: 1.05rem;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .leave-request-card,
+  .task-card {
+    padding: 16px 24px;
+  }
+
+  .leave-header {
+    font-size: 17px;
+  }
+
+  .leave-dates,
+  .leave-reason {
+    font-size: 15px;
+  }
+
+  .status-badge {
+    font-size: 0.9rem;
+  }
+} */

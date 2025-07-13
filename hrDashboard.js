@@ -1,3 +1,4 @@
+
 const token = localStorage.getItem("token");
 const headers = {
   "Authorization": `Bearer ${token}`,
@@ -6,6 +7,7 @@ const headers = {
 
 let editingNoteId = null;
 
+// Render the 5-day date bar centered on today
 function renderDateBar() {
   const dateBar = document.getElementById("dateBar");
   const today = new Date();
@@ -19,22 +21,20 @@ function renderDateBar() {
     dateBar.appendChild(div);
   }
 }
-let loggedInUser = null;
 
+// Fetch and set logged-in user info on dashboard
 async function setLoggedInUserInfo() {
   try {
     const res = await fetch("https://hrms-project-8b8h.onrender.com/profile/me", { headers });
     if (!res.ok) throw new Error("Profile fetch failed");
-    loggedInUser = await res.json();
-
+    const loggedInUser = await res.json();
     document.querySelector(".user-header strong").innerText = loggedInUser.name || "HR User";
   } catch (err) {
     console.error("❌ Error fetching profile:", err);
   }
 }
 
-
-
+// Fetch dashboard main data: counts, notes, tasks, and pending leaves count
 async function fetchDashboardData() {
   try {
     const [empRes, leaveRes, newRes, notesRes, taskRes] = await Promise.all([
@@ -62,69 +62,91 @@ async function fetchDashboardData() {
 
     if (notesRes.ok) {
       const data = await notesRes.json();
-      const notesList = document.getElementById("hrNotesList");
-      notesList.innerHTML = "";
-
-      data.forEach(note => {
-        const div = document.createElement("div");
-        div.className = "note-item";
-        div.innerHTML = `
-          <div class="note-content">📝 ${note.content}</div>
-          <div class="note-actions">
-            <button class="delete-note" data-id="${note._id}">🗑️</button>
-          </div>
-        `;
-        notesList.appendChild(div);
-      });
-
-      document.querySelectorAll(".delete-note").forEach(button => {
-        button.addEventListener("click", () => {
-          const noteId = button.getAttribute("data-id");
-          deleteNote(noteId);
-        });
-      });
+      renderNotes(data);
     }
 
     if (taskRes.ok) {
       const data = await taskRes.json();
-      const taskList = document.getElementById("taskList");
-      taskList.innerHTML = "";
+      renderTasks(data);
+    }
 
-      data.forEach(task => {
-        const div = document.createElement("div");
-        div.className = "task-card";
+    // Fetch and update pending leave count
+    await fetchPendingLeaveCount();
 
-        const statusColor = {
-          "pending": "orange",
-          "in-progress": "blue",
-          "completed": "green"
-        };
+  } catch (err) {
+    console.error("❌ Error fetching dashboard data:", err);
+  }
 
-        div.innerHTML = `
+  // Fetch and render leave requests separately
+  renderLeaveRequests();
+}
+
+// Render notes in the dashboard
+function renderNotes(notes) {
+  const notesList = document.getElementById("hrNotesList");
+  notesList.innerHTML = "";
+
+  notes.forEach(note => {
+    const div = document.createElement("div");
+    div.className = "note-item";
+    div.innerHTML = `
+      <div class="note-content">📝 ${note.content}</div>
+      <div class="note-actions">
+        <button class="delete-note" data-id="${note._id}">🗑️</button>
+      </div>
+    `;
+    notesList.appendChild(div);
+  });
+
+  // Attach delete handlers
+  document.querySelectorAll(".delete-note").forEach(button => {
+    button.addEventListener("click", () => {
+      const noteId = button.getAttribute("data-id");
+      deleteNote(noteId);
+    });
+  });
+}
+
+// Render tasks in the dashboard
+function renderTasks(tasks) {
+  const taskList = document.getElementById("taskList");
+  taskList.innerHTML = "";
+
+  tasks.forEach(task => {
+    const div = document.createElement("div");
+    div.className = "task-card";
+
+    div.innerHTML = `
   <strong style="font-size:1.1rem; color:#222;">${task.title}</strong>
   <p style="margin:5px 0;"><b>Description:</b> ${task.description}</p>
-<p style="margin:5px 0;"><b>Assigned To:</b> <span style="color:#555;">${task.assignedTo?.name || task.assignedTo || 'N/A'}</span></p>
+  <p style="margin:5px 0;"><b>Assigned To:</b> <span style="color:#555;">${task.assignedTo?.email || task.email || task.assignedTo || 'N/A'}</span></p>
   <p style="margin:5px 0;"><b>Due Date:</b> <span style="color:#555;">${new Date(task.dueDate).toLocaleDateString()}</span></p>
   <p style="margin:5px 0;">
     <b>Status:</b> 
     <span class="status-badge ${task.status}">${task.status}</span>
   </p>
 `;
+taskList.appendChild(div);
 
-
-
-        taskList.appendChild(div);
-      });
-    }
-
-
-  } catch (err) {
-    console.error("❌ Error fetching dashboard data:", err);
-  }
-
-  renderLeaveRequests(); // call leave requests after everything
+  });
 }
 
+// Fetch and update the count of pending leave requests
+async function fetchPendingLeaveCount() {
+  try {
+    const res = await fetch("https://hrms-project-8b8h.onrender.com/leave/requests", { headers });
+    if (!res.ok) throw new Error("Failed to fetch leave requests");
+
+    const data = await res.json();
+    const pendingCount = data.filter(leave => leave.status === "pending").length;
+    document.getElementById("pendingLeaveCount").innerText = pendingCount;
+  } catch (err) {
+    console.error("Error fetching pending leave count:", err);
+    document.getElementById("pendingLeaveCount").innerText = "N/A";
+  }
+}
+
+// Delete a note by ID
 async function deleteNote(noteId) {
   if (!confirm("Are you sure you want to delete this note?")) return;
 
@@ -141,6 +163,7 @@ async function deleteNote(noteId) {
   }
 }
 
+// Render the leave requests cards with approve/reject buttons for pending ones
 async function renderLeaveRequests() {
   try {
     const res = await fetch("https://hrms-project-8b8h.onrender.com/leave/requests", { headers });
@@ -148,7 +171,7 @@ async function renderLeaveRequests() {
 
     const data = await res.json();
 
-    // Optional: Sort so pending comes on top
+    // Sort pending leaves to top
     data.sort((a, b) => {
       if (a.status === "pending") return -1;
       if (b.status === "pending") return 1;
@@ -171,13 +194,11 @@ async function renderLeaveRequests() {
         </div>
         <div class="leave-reason">💬 ${leave.reason}</div>
 
-        ${leave.status === 'pending'
-          ? `<div class="leave-actions">
-                <button class="approve-btn" onclick="updateLeaveStatus('${leave._id}', 'approved')">✅ Approve</button>
-                <button class="reject-btn" onclick="updateLeaveStatus('${leave._id}', 'rejected')">❌ Reject</button>
-              </div>`
-          : ''
-        }
+        ${leave.status === 'pending' ? `
+          <div class="leave-actions">
+            <button class="approve-btn" onclick="updateLeaveStatus('${leave._id}', 'approved')">✅ Approve</button>
+            <button class="reject-btn" onclick="updateLeaveStatus('${leave._id}', 'rejected')">❌ Reject</button>
+          </div>` : ''}
       `;
       leaveContainer.appendChild(div);
     });
@@ -187,6 +208,7 @@ async function renderLeaveRequests() {
   }
 }
 
+// Update leave status API call
 async function updateLeaveStatus(leaveId, status) {
   try {
     const res = await fetch("https://hrms-project-8b8h.onrender.com/leave/update-status", {
@@ -202,6 +224,7 @@ async function updateLeaveStatus(leaveId, status) {
   }
 }
 
+// Setup the modal for assigning new tasks
 function setupModal() {
   const modal = document.getElementById("taskModal");
   document.getElementById("addTaskBtn").onclick = () => modal.style.display = "block";
@@ -209,54 +232,42 @@ function setupModal() {
   window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
 
   document.getElementById("taskForm").onsubmit = async function (e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  const title = document.getElementById("taskTitle").value;
-  const description = document.getElementById("taskDescription").value;
-  const assignedTo = document.getElementById("assignedTo").value; // make sure this is a valid _id
-  const dueDate = document.getElementById("dueDate").value;
-  const createdAt = document.getElementById("createdAt").value || new Date().toISOString();
+    const title = document.getElementById("taskTitle").value.trim();
+    const description = document.getElementById("taskDescription").value.trim();
+    const email = document.getElementById("taskEmail").value.trim();
+    const dueDate = document.getElementById("dueDate").value;
 
-  const token = localStorage.getItem("token");
-
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
-
-  const body = JSON.stringify({
-    title,
-    description,
-    assignedTo,
-    dueDate,
-    createdAt,
-  });
-
-  try {
-    const response = await fetch("https://hrms-project-8b8h.onrender.com/tasks/assign", {
-      method: "POST",
-      headers,
-      body,
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.message || "Task not assigned");
+    if (!title || !description || !email || !dueDate) {
+      alert("Please fill all the required fields.");
+      return;
     }
 
-    alert("✅ Task assigned successfully!");
-    document.getElementById("taskForm").reset();
-    document.getElementById("taskModal").style.display = "none";
-    // optionally refresh task list here
-  } catch (err) {
-    console.error("❌ Error:", err);
-    alert("❌ " + err.message);
-  }
-};
+    try {
+      const response = await fetch("https://hrms-project-8b8h.onrender.com/tasks/assign", {
+        method: "POST",
+        headers,
+body: JSON.stringify({ title, description, email, dueDate }),
+      });
+
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.message || "Task not assigned");
+      }
+
+      alert("✅ Task assigned successfully!");
+      document.getElementById("taskForm").reset();
+      modal.style.display = "none";
+      fetchDashboardData();
+    } catch (err) {
+      console.error("❌ Error:", err);
+      alert("❌ " + err.message);
+    }
+  };
 }
 
-
+// Setup the modal for adding/editing notes
 function setupNoteModal() {
   const noteModal = document.getElementById("noteModal");
   const noteForm = document.getElementById("noteForm");
@@ -302,10 +313,9 @@ function setupNoteModal() {
   };
 }
 
-// INIT
+// Initialize everything on page load
 renderDateBar();
+setLoggedInUserInfo();
 fetchDashboardData();
 setupModal();
 setupNoteModal();
-
-setLoggedInUserInfo();
