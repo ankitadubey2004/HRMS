@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 1rem;
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(to bottom right, #e0f0ff, #f5f7fb);
+  background: linear-gradient(to bottom right, #f0f4ff, #ffffff);
   color: #1f2937;
 }
 
@@ -13,54 +13,122 @@ body {
 }
 
 .logo {
-  font-size: 64px;
+  font-size: 80px; /* Big and bold */
   color: #4a6cf7;
+  margin: 1.5rem auto 1rem;
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(74, 108, 247, 0.4));
+  transition: color 0.3s ease;
+  cursor: default;
+}
+
+.logo:hover {
+  color: #375dd4;
+}
+
+.page-title {
   margin-top: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-h2 {
   margin-bottom: 1.5rem;
+  font-size: 28px;
+  font-weight: 700;
+  color: #4a6cf7;
+  text-align: center;
 }
 
-.form-card {
+.profile-details {
   background: #fff;
+  padding: 1.5rem;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.profile-details p {
+  font-size: 16px;
+  margin: 0.6rem 0;
+}
+
+.update-btn {
+  background-color: #4a6cf7;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.update-btn:hover {
+  background-color: #375dd4;
+}
+
+/* MODAL STYLE */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 14px;
+  width: 90%;
+  max-width: 360px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   text-align: left;
 }
 
-.form-card label {
-  font-size: 14px;
-  color: #374151;
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
-.form-card input {
-  padding: 0.6rem;
-  border: 1px solid #d1d5db;
+.modal-content input {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.7rem;
   border-radius: 8px;
+  border: 1px solid #d1d5db;
   font-size: 15px;
 }
 
-.form-card button {
-  margin-top: 1rem;
-  padding: 0.7rem;
+.modal-content button {
+  width: 100%;
+  padding: 0.8rem;
   background-color: #4a6cf7;
   color: white;
   border: none;
   border-radius: 10px;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
-.form-card button:hover {
-  background-color: #375dd4;
+.close {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 24px;
+  color: #555;
+  cursor: pointer;
 }
+
+/* FOOTER NAVIGATION */
 .footer-nav {
   position: fixed;
   bottom: 0;

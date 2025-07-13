@@ -107,25 +107,26 @@ function renderEmployees(data) {
   container.innerHTML = '';
 
   data.forEach(emp => {
+    console.log("Employee data:", emp); // ✅ Safe here
+
     const div = document.createElement('div');
     div.className = 'employee-card';
 
     div.innerHTML = `
-      <div class="card-header">
-        <h4>${emp.name}</h4>
-        <span class="badge ${emp.score >= 80 ? 'high' : emp.score >= 50 ? 'moderate' : 'low'}">${emp.score}%</span>
-      </div>
-      <p class="emp-meta">${emp.department} • ${emp.position}</p>
-      <div class="card-details">
-        <p><strong>Tasks Completed:</strong> ${emp.tasksCompleted}</p>
-        <p><strong>On-Time Attendance:</strong> ${emp.onTimeAttendance}</p>
-      </div>
-    `;
+  <div class="card-header">
+    <h4>${emp.name || 'Unknown Name'}</h4>
+    <span class="badge ${emp.score >= 80 ? 'high' : emp.score >= 50 ? 'moderate' : 'low'}">${emp.score}%</span>
+  </div>
+  <p class="emp-meta">${emp.department || 'Unknown Dept'} • ${emp.position || 'Unknown Position'}</p>
+  <div class="card-details">
+    <p><strong>Tasks Completed:</strong> ${emp.tasksCompleted !== undefined ? emp.tasksCompleted : 'N/A'}</p>
+    <p><strong>On-Time Attendance:</strong> ${emp.onTimeAttendance !== undefined ? emp.onTimeAttendance : 'N/A'}</p>
+  </div>
+`;
 
     container.appendChild(div);
   });
 }
-
 function filter(type) {
   let filtered;
   if (type === 'high') {
