@@ -13,24 +13,37 @@
       <i class="fa-solid fa-user-circle"></i>
     </div>
 
-    <h2>My Profile</h2>
+    <h2 class="page-title">My Profile</h2>
 
-    <form id="profileForm" class="form-card">
-      <label for="name">Name</label>
-      <input type="text" id="name" placeholder="Your name" required />
+    <div class="profile-details">
+      <p><strong>Name:</strong> <span id="dispName">Loading...</span></p>
+      <p><strong>Phone:</strong> <span id="dispPhone">Loading...</span></p>
+      <p><strong>Department:</strong> <span id="dispDepartment">Loading...</span></p>
+      <p><strong>Position:</strong> <span id="dispPosition">Loading...</span></p>
+    </div>
 
-      <label for="phone">Phone</label>
-      <input type="text" id="phone" placeholder="Phone number" />
+    <button id="editBtn" class="update-btn">
+      <i class="fa-solid fa-pen-to-square"></i> Update Profile
+    </button>
+  </div>
 
-      <label for="department">Department</label>
-      <input type="text" id="department" placeholder="Department" />
+  <!-- MODAL POPUP -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h3>Edit Profile</h3>
+      <form id="profileForm">
+        <input type="text" id="name" placeholder="Your name" required />
+        <input type="text" id="phone" placeholder="Phone number" />
+        <input type="text" id="department" placeholder="Department" />
+        <input type="text" id="position" placeholder="Position" />
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
+  </div>
 
-      <label for="position">Position</label>
-      <input type="text" id="position" placeholder="Position" />
-
-      <button type="submit">Update Profile</button>
-    </form>
-    <nav class="footer-nav">
+  <!-- FOOTER NAVIGATION -->
+  <nav class="footer-nav">
     <a href="employeeDash.html" class="footer-nav__item">
       <i class="fa-solid fa-house-chimney footer-nav__icon"></i>
       <span class="footer-nav__text">Home</span>
@@ -52,7 +65,6 @@
       <span class="footer-nav__text">Profile</span>
     </a>
   </nav>
-  </div>
 
   <script src="empprofile.js"></script>
 </body>
