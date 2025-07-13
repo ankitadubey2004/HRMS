@@ -1,111 +1,95 @@
-document.addEventListener('DOMContentLoaded', fetchPerformance);
-
-let scoreChartInstance = null;
-
-function getCurrentMonthRange() {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
-  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
-  return { start, end };
+function formatDate(date) {
+  return date.toISOString().slice(0, 10);
 }
 
+let pieChart = null;
+
 async function fetchPerformance() {
-  const token = localStorage.getItem('token');
-  const headers = {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  };
-
-  const loader = createLoader();
-  document.querySelector('.container').appendChild(loader);
-
-  const { start, end } = getCurrentMonthRange();
+  const loadingEl = document.getElementById('loading');
+  const errorEl = document.getElementById('error');
+  const contentEl = document.getElementById('performanceContent');
 
   try {
-    const response = await fetch(`https://hrms-project-8b8h.onrender.com/performance/me?start=${start}&end=${end}`, {
-      method: 'GET',
-      headers
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('Not authorized. Please login.');
+
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(endDate.getDate() - 6); // last 7 days
+
+    const params = new URLSearchParams({
+      start: formatDate(startDate),
+      end: formatDate(endDate)
     });
 
-    if (!response.ok) throw new Error('Failed to fetch');
+    const url = 'https://hrms-project-8b8h.onrender.com/performance/me?' + params.toString();
 
-    const data = await response.json();
-    loader.remove();
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
-    // Update UI with fetched data
-    document.getElementById('empName').innerText = data.name || 'Employee';
-    document.getElementById('empRole').innerText = data.role || 'Employee Role';
-    document.getElementById('lastReview').innerText = `Last review: ${data.lastReviewDate || '--'}`;
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error || 'Failed to fetch data');
+    }
 
-    const score = data.score || 0;
-    document.getElementById('scorePercent').innerText = `${score}%`;
+    const data = await res.json();
 
-    document.getElementById('selfReview').innerText = data.selfReview?.text || '--';
-    document.getElementById('selfReviewDate').innerText = `${data.selfReview?.date || '--'} | By: Self`;
+    // Update cards
+    document.getElementById('tasksCompleted').textContent = data.tasksCompleted;
+    document.getElementById('tasksOnTime').textContent = data.tasksOnTime;
+    document.getElementById('totalAttendance').textContent = data.totalAttendance;
+    document.getElementById('onTimeAttendance').textContent = data.onTimeAttendance;
+    document.getElementById('scoreNumber').textContent = `${data.score} / 100`;
+    document.getElementById('scoreProgress').value = data.score;
 
-    document.getElementById('managerFeedback').innerText = data.managerReview?.text || '--';
-    document.getElementById('managerReviewDate').innerText = `${data.managerReview?.date || '--'} | By: ${data.managerReview?.by || 'Manager'}`;
+    // Prepare pie chart data (example: completed tasks vs not completed, attendance on time vs late)
+    const tasksNotCompleted = data.tasksCompleted - data.tasksOnTime;
+    const attendanceLate = data.totalAttendance - data.onTimeAttendance;
 
-    drawChart(score);
+    // Destroy old chart if exists
+    if (pieChart) pieChart.destroy();
+
+    const ctx = document.getElementById('performancePieChart').getContext('2d');
+    pieChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Tasks On Time', 'Tasks Late', 'On-Time Attendance', 'Late Attendance'],
+        datasets: [{
+          label: 'Performance Metrics',
+          data: [data.tasksOnTime, tasksNotCompleted > 0 ? tasksNotCompleted : 0, data.onTimeAttendance, attendanceLate > 0 ? attendanceLate : 0],
+          backgroundColor: ['#4a90e2', '#e14a4a', '#7ed957', '#f5b942'],
+          hoverOffset: 20,
+          borderWidth: 0
+        }]
+      },
+      options: {
+        cutout: '70%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: { size: 14 }
+            }
+          },
+          tooltip: {
+            enabled: true
+          }
+        }
+      }
+    });
+
+    loadingEl.style.display = 'none';
+    errorEl.style.display = 'none';
+    contentEl.style.display = 'block';
+
   } catch (err) {
-    console.error('Error fetching performance:', err);
-    loader.remove();
-    showError("Unable to load performance data. Please try again later.");
+    loadingEl.style.display = 'none';
+    errorEl.textContent = err.message;
+    errorEl.style.display = 'block';
   }
 }
 
-function drawChart(score) {
-  const canvas = document.getElementById('scoreChart');
-  const ctx = canvas.getContext('2d');
-
-  // Score-based dynamic color
-  let mainColor = '#00c6ff';
-  if (score < 60) mainColor = '#f44336'; // red
-  else if (score < 80) mainColor = '#ffc107'; // yellow
-  else mainColor = '#4caf50'; // green
-
-  const gradient = ctx.createLinearGradient(0, 0, 120, 120);
-  gradient.addColorStop(0, mainColor);
-  gradient.addColorStop(1, '#e0e0e0');
-
-  if (scoreChartInstance) scoreChartInstance.destroy();
-
-  scoreChartInstance = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      datasets: [{
-        data: [score, 100 - score],
-        backgroundColor: [mainColor, '#e0e0e0'],
-        borderWidth: 0
-      }]
-    },
-    options: {
-      cutout: '70%',
-      responsive: false,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { enabled: false }
-      }
-    }
-  });
-}
-
-function createLoader() {
-  const loader = document.createElement('div');
-  loader.innerText = 'Loading...';
-  loader.style.textAlign = 'center';
-  loader.style.margin = '20px 0';
-  loader.style.fontWeight = 'bold';
-  loader.style.color = '#555';
-  return loader;
-}
-
-function showError(message) {
-  const errorDiv = document.createElement('div');
-  errorDiv.innerText = message;
-  errorDiv.style.color = 'red';
-  errorDiv.style.margin = '20px';
-  errorDiv.style.textAlign = 'center';
-  document.querySelector('.container').appendChild(errorDiv);
-}
+fetchPerformance();
