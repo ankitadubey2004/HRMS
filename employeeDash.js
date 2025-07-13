@@ -19,22 +19,22 @@ function renderDateBar() {
     }
 }
 async function loadUserProfile() {
-  try {
-    const res = await fetch("https://hrms-project-8b8h.onrender.com/profile/me", {
-      headers,
-    });
+    try {
+        const res = await fetch("https://hrms-project-8b8h.onrender.com/profile/me", {
+            headers,
+        });
 
-    if (!res.ok) throw new Error("Failed to fetch profile");
+        if (!res.ok) throw new Error("Failed to fetch profile");
 
-    const user = await res.json();
+        const user = await res.json();
 
-    // Set name and position in header
-    document.querySelector(".user-header strong").innerText = user.name || "Employee";
-    document.querySelector(".user-header small").innerText = user.position || user.role || "Staff";
+        // Set name and position in header
+        document.querySelector(".user-header strong").innerText = user.name || "Employee";
+        document.querySelector(".user-header small").innerText = user.position || user.role || "Staff";
 
-  } catch (err) {
-    console.error("❌ Error loading user profile:", err);
-  }
+    } catch (err) {
+        console.error("❌ Error loading user profile:", err);
+    }
 }
 
 
@@ -51,7 +51,8 @@ async function checkIn() {
     const data = await res.json();
 
     if (!res.ok) {
-        throw new Error(data.message || 'Check-in failed');
+        alert(data.message); // Show "Attendance already marked for today"
+        return;
     }
 
     document.getElementById('attendance-status').textContent = `Checked in at: ${new Date().toLocaleTimeString()}`;
@@ -59,87 +60,98 @@ async function checkIn() {
 
 
 async function checkOut() {
-    const res = await fetch('https://hrms-project-8b8h.onrender.com/attendance/check-out', {
-        method: 'POST',
-        headers
+    const currentTime = new Date().toISOString(); // Send the checkout time
+    const res = await fetch('https://hrms-project-8b8h.onrender.com/attendance/checkout', {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify({ checkoutTime: currentTime })
     });
+
     const data = await res.json();
+
+    if (!res.ok) {
+        throw new Error(data.message || 'Checkout failed');
+    }
+
     document.getElementById('attendance-status').textContent = `Checked out at: ${new Date().toLocaleTimeString()}`;
 }
-
 // -------------------- Tasks --------------------
 
 
 // Fetch tasks assigned to logged-in employee
+// -------------------- Tasks --------------------
+
 async function loadTasks() {
-    try {
-        const res = await fetch('https://hrms-project-8b8h.onrender.com/tasks/my-tasks', {
-            method: 'GET',
-            headers
-        });
+  try {
+    const res = await fetch('https://hrms-project-8b8h.onrender.com/tasks/my-tasks', {
+      method: 'GET',
+      headers,
+    });
 
-        if (!res.ok) {
-            throw new Error('Failed to fetch tasks');
-        }
+    if (!res.ok) throw new Error('Failed to fetch tasks');
 
-        const tasks = await res.json();
+    const tasks = await res.json();
+    const container = document.getElementById('task-list');
+    container.innerHTML = '';
 
-        const container = document.getElementById('task-list');
-        container.innerHTML = '';
-
-        if (tasks.length === 0) {
-            container.innerHTML = '<p>No tasks assigned yet.</p>';
-            return;
-        }
-
-        tasks.forEach(task => {
-            const div = document.createElement('div');
-            div.className = 'task';
-            div.innerHTML = `
-  <div class="task-header">
-    <strong>${task.title}</strong>
-    <span class="task-due">Due: ${new Date(task.dueDate).toLocaleDateString()}</span>
-  </div>
-  <p class="task-desc">${task.description}</p>
-  <div class="status-btns">
-    <button class="${task.status === 'pending' ? 'active' : ''}" onclick="updateTaskStatus('${task._id}', 'pending')">Pending</button>
-    <button class="${task.status === 'in-progress' ? 'active' : ''}" onclick="updateTaskStatus('${task._id}', 'in-progress')">In Progress</button>
-    <button class="${task.status === 'completed' ? 'active' : ''}" onclick="updateTaskStatus('${task._id}', 'completed')">Completed</button>
-  </div>
-`;
-
-            container.appendChild(div);
-        });
-    } catch (err) {
-        console.error("Error loading tasks:", err);
-        alert("Failed to load tasks. Please try again.");
+    if (!tasks.length) {
+      container.innerHTML = '<p>No tasks assigned yet.</p>';
+      return;
     }
+
+    tasks.forEach(task => {
+      const div = document.createElement('div');
+      div.className = 'task';
+      div.innerHTML = `
+        <div class="task-header">
+          <strong>${task.title}</strong>
+          <span class="task-due">Due: ${new Date(task.dueDate).toLocaleDateString()}</span>
+        </div>
+        <p class="task-desc">${task.description}</p>
+        <div class="status-btns">
+          <button class="${task.status === 'pending' ? 'active' : ''}" onclick="updateTaskStatus('${task._id}', 'pending')">Pending</button>
+          <button class="${task.status === 'in-progress' ? 'active' : ''}" onclick="updateTaskStatus('${task._id}', 'in-progress')">In Progress</button>
+          <button class="${task.status === 'completed' ? 'active' : ''}" onclick="updateTaskStatus('${task._id}', 'completed')">Completed</button>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  } catch (err) {
+    console.error("❌ Error loading tasks:", err.message);
+    alert("Failed to load tasks. Please try again.");
+  }
 }
 
-// Update task status API call
 async function updateTaskStatus(taskId, status) {
-    try {
-        const res = await fetch(`https://hrms-project-8b8h.onrender.com/tasks/update-status/${taskId}`, {
-            method: 'PUT',
-            headers,
-            body: JSON.stringify({ status })
-        });
-
-        if (!res.ok) {
-            const errorData = await res.json();
-            throw new Error(errorData.message || 'Failed to update task status');
-        }
-
-        // Refresh task list after status update
-        loadTasks();
-    } catch (err) {
-        console.error("Error updating task status:", err);
-        alert("Failed to update task status. Please try again.");
+  try {
+    // Basic status validation
+    if (!['pending', 'in-progress', 'completed'].includes(status)) {
+      alert("Invalid status value.");
+      return;
     }
-}
 
-// Call this on page load to fetch and show tasks
+    const res = await fetch(`https://hrms-project-8b8h.onrender.com/tasks/update-status/${taskId}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ status })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error("❌ Task update error:", data.message);
+      throw new Error(data.message || 'Failed to update task status');
+    }
+
+    console.log(`✅ Task ${taskId} updated to ${status}`);
+    loadTasks(); // Refresh task list
+  } catch (err) {
+    console.error("❌ Error updating task status:", err.message);
+    alert("Could not update task status. Please try again.");
+  }
+}
 loadTasks();
+
 
 // -------------------- Leave Status --------------------
 async function loadLeaves() {
