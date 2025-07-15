@@ -60,13 +60,21 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     if (res.ok) {
       alert("Login successful!");
 
-      // ✅ Save token to localStorage for future authenticated requests
       if (data.token) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("userRole", role); // optional: save role too
+        localStorage.setItem("userRole", role);
+                localStorage.setItem("userId", data.user._id);
+
       }
 
-      // 🔁 Redirect logic
+      // NEW: Save userId in localStorage for payroll fetch
+      if (data.user && data.user._id) {
+        localStorage.setItem("userId", data.user._id);
+      } else {
+        console.warn("No user ID returned from login API.");
+      }
+
+      // Redirect logic stays the same
       let redirectPage = "";
       if (role === "Admin") {
         redirectPage = "registerHr.html";
@@ -77,9 +85,8 @@ document.getElementById("loginForm").addEventListener("submit", async function (
       }
 
       window.location.href = redirectPage;
-    } else {
-      alert(data.message || "Login failed.");
     }
+
   } catch (error) {
     console.error(error);
     alert("Server error. Please try again.");

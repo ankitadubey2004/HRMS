@@ -1,0 +1,180 @@
+<!-- payroll.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <title>HR - Payroll List</title>
+    <link rel="stylesheet" href="payroll.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h2>HR Dashboard - Employee Payroll List</h2>
+        <button class="add-btn" onclick="openModal()">+</button>
+
+        <div id="employeeList"></div>
+    </div>
+    <div class="modal" id="payrollModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3>Generate Payroll</h3>
+            <input type="email" id="email" placeholder="Employee Email" required />
+            <input type="text" id="month" placeholder="Month (e.g., 07)" required />
+            <input type="text" id="year" placeholder="Year (e.g., 2025)" required />
+            <input type="number" id="salary" placeholder="Base Salary" required />
+            <input type="number" id="bonus" placeholder="Bonus (optional)" />
+            <div class="modal-buttons">
+                <button onclick="submitPayroll()">Generate</button>
+                <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="footer-nav">
+        <a href="hrDashboard.html" class="footer-nav__item footer-nav__item--active">
+            <i class="fa-solid fa-house-chimney footer-nav__icon"></i>
+            <span class="footer-nav__text">Home</span>
+        </a>
+        <a href="hrattendance.html" class="footer-nav__item">
+            <i class="fa-solid fa-calendar-days footer-nav__icon"></i>
+            <span class="footer-nav__text">Attendance</span>
+        </a>
+        <a href="hrleave.html" class="footer-nav__item">
+            <i class="fa-solid fa-clipboard-list footer-nav__icon"></i>
+            <span class="footer-nav__text">Leave</span>
+        </a>
+        <a href="hrperformance.html" class="footer-nav__item">
+            <i class="fa-solid fa-chart-line footer-nav__icon"></i>
+            <span class="footer-nav__text">Performance</span>
+        </a>
+        <a href="hrprofile.html" class="footer-nav__item">
+            <i class="fa-solid fa-user footer-nav__icon"></i>
+            <span class="footer-nav__text">Profile</span>
+        </a>
+    </nav>
+
+    <script>
+        // 🔥 Fetch and display all payrolls
+        async function fetchEmployees() {
+            try {
+                const response = await fetch('https://hrms-project-8b8h.onrender.com/payroll/allPayrolls', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                const employees = await response.json();
+
+                const listContainer = document.getElementById('employeeList');
+                listContainer.innerHTML = '<ul>' + employees.map(emp => `
+  <li>
+    <div class="employee-info">
+      <strong>${emp.employeeId.name}</strong> (${emp.employeeId.email}) - ${emp.month} | ₹${emp.netSalary}
+    </div>
+    <button onclick="viewPayroll('${emp.employeeId._id}')">View Payroll</button>
+  </li>
+`).join('') + '</ul>';
+
+            } catch (err) {
+                console.error('Failed to fetch payrolls:', err);
+                alert('Error fetching payroll list');
+            }
+        }
+
+        // 🔁 Redirect to payroll detail page
+        function viewPayroll(empId) {
+            localStorage.setItem('selectedEmpId', empId);
+            window.location.href = 'hrpayroll.html';
+        }
+
+        // 📥 Modal open
+        function openModal() {
+            document.getElementById('payrollModal').style.display = 'flex';
+        }
+
+        // 📤 Modal close + reset
+        function closeModal() {
+            document.getElementById('payrollModal').style.display = 'none';
+            resetForm();
+        }
+
+        // 🔄 Reset form inputs
+        function resetForm() {
+            document.getElementById('email').value = '';
+            document.getElementById('month').value = '';
+            document.getElementById('year').value = '';
+            document.getElementById('salary').value = '';
+            document.getElementById('bonus').value = '';
+        }
+
+        // 📤 Submit payroll generation
+        async function submitPayroll() {
+            const email = document.getElementById('email').value.trim();
+            const month = document.getElementById('month').value.trim();
+            const year = document.getElementById('year').value.trim();
+            const salary = document.getElementById('salary').value.trim();
+            const bonus = document.getElementById('bonus').value.trim();
+
+            // Basic Validation
+            if (!email || !month || !year || !salary) {
+                alert('Please fill all required fields!');
+                return;
+            }
+
+            if (month.length !== 2 || +month < 1 || +month > 12) {
+                alert('Enter a valid month (01 to 12)');
+                return;
+            }
+
+            if (year.length !== 4 || isNaN(year)) {
+                alert('Enter a valid 4-digit year');
+                return;
+            }
+
+            const payload = { email, month, year, salary, bonus };
+
+            try {
+                const res = await fetch('https://hrms-project-8b8h.onrender.com/payroll/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    alert(data.message || 'Something went wrong');
+                    return;
+                }
+
+                alert('✅ Payroll generated successfully!');
+                closeModal();
+                fetchEmployees(); // Refresh list
+            } catch (err) {
+                console.error('Payroll generation error:', err);
+                alert('Error generating payroll');
+            }
+        }
+
+        // ⌨️ Close modal with Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // 🚀 On page load
+        fetchEmployees();
+    </script>
+
+
+</body>
+
+</html>
