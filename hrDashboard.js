@@ -132,19 +132,6 @@ taskList.appendChild(div);
 }
 
 // Fetch and update the count of pending leave requests
-async function fetchPendingLeaveCount() {
-  try {
-    const res = await fetch("https://hrms-project-8b8h.onrender.com/leave/requests", { headers });
-    if (!res.ok) throw new Error("Failed to fetch leave requests");
-
-    const data = await res.json();
-    const pendingCount = data.filter(leave => leave.status === "pending").length;
-    document.getElementById("pendingLeaveCount").innerText = pendingCount;
-  } catch (err) {
-    console.error("Error fetching pending leave count:", err);
-    document.getElementById("pendingLeaveCount").innerText = "N/A";
-  }
-}
 
 // Delete a note by ID
 async function deleteNote(noteId) {
