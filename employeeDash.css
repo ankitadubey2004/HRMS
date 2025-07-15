@@ -152,7 +152,7 @@ button:hover {
     color: #2c3e50;
 }
 
-/* Task styling */
+/* Task styling */ 
 .task {
     background: white;
     border-left: 5px solid #4475f2;
@@ -268,6 +268,35 @@ button:hover {
     color: #856404;
     border-color: #ffeeba;
 }
+.highlight-card-link {
+    text-decoration: none;
+    display: block;
+}
+
+.highlight-card {
+    background: linear-gradient(135deg, #6c63ff, #5a54e9);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.highlight-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.highlight-card h2 {
+    margin: 0 0 8px;
+    font-weight: 600;
+    font-size: 22px;
+    color: white;
+}
+
+
 
 /* Footer navigation */
 .footer-nav {
