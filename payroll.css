@@ -1,0 +1,240 @@
+/* Base Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f4ff;
+  margin: 0;
+  padding: 10px;
+  color: #1f2b53;
+}
+
+/* Main Container */
+.container {
+  max-width: 650px;
+  margin: 20px auto;
+  background: #ffffff;
+  padding: 24px 28px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Heading */
+h2 {
+  text-align: center;
+  color: #2f55c4;
+  margin-bottom: 24px;
+  font-weight: 700;
+  font-size: 1.75rem;
+  letter-spacing: 0.3px;
+}
+
+/* Employee List */
+#employeeList ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px;
+}
+
+#employeeList li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f6f9ff;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 3px 8px rgba(74, 116, 255, 0.08);
+  transition: all 0.25s ease;
+  gap: 16px; /* space between text and button */
+}
+
+.employee-info {
+  flex-grow: 1;       /* text takes all leftover space */
+  font-size: 1rem;
+  color: #23357c;
+  font-weight: 600;
+  white-space: normal; /* allow wrapping to next line if needed */
+}
+
+#employeeList li button {
+  background-color: #4a74ff;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  min-width: 100px;
+  flex-shrink: 0; /* keep button size fixed */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#employeeList li button:hover {
+  background-color: #3c5ed8;
+  box-shadow: 0 6px 14px rgba(58, 89, 255, 0.25);
+}
+/* Employee Name */
+#employeeList strong {
+  color: #23357c;
+  font-weight: 600;
+  max-width: 70%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* View Payroll Button */
+button {
+  background-color: #4a74ff;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background-color: #3c5ed8;
+  box-shadow: 0 6px 14px rgba(58, 89, 255, 0.25);
+}
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 414px;
+  height: 65px;
+  background-color: #4475f2; /* Light green with 80% opacity */
+  backdrop-filter: blur(5px);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 10px;
+  box-shadow: 0 -2px 10px white;
+  z-index: 1000;
+}
+
+.footer-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: white;
+  gap: 4px;
+}
+
+.footer-nav__icon {
+  width: 22px;
+  height: 22px;
+  font-size: 20px;
+  color: white;
+}
+
+.footer-nav__item--active .footer-nav__text {
+  color: white; 
+}
+
+.footer-nav__item--active .footer-nav__icon {
+  /* filter: invert(56%) sepia(73%) saturate(464%) hue-rotate(50deg) brightness(94%) contrast(86%); */
+  color: white;
+}
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: slideUp 0.3s ease-in-out;
+}
+
+.modal-content input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.cancel-btn {
+  background: #ccc;
+  color: #000;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+/* Responsive for Mobile */
+@media (max-width: 480px) {
+  .container {
+    padding: 20px 16px;
+    margin: 16px 10px;
+  }
+
+  #employeeList li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px 0;
+  }
+}

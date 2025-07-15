@@ -1,0 +1,136 @@
+<!-- hr-employee-payroll.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HR - Employee Payroll Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <link rel="stylesheet" href="hrpayroll.css" />
+</head>
+
+<body>
+    <a href="payroll.html" class="back-button">&larr; Back</a>
+
+    <div class="container">
+        <div class="profile-pic"></div>
+        <h3>Employee Payroll Details</h3>
+
+        <div>
+            <label for="month" style="color: #0d1a47">Month:</label>
+            <select id="month">
+                <option value="" disabled selected>Select Month</option>
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+
+            <label for="year" style=" color: #0d1a47;">Year:</label>
+            <select id="year">
+                <option value="" disabled selected>Select Year</option>
+            </select>
+        </div>
+
+        <button onclick="fetchPayroll()">Get Payroll</button>
+
+        <div id="payrollInfo" class="payroll-info"></div>
+        <div id="errorMsg" class="error-msg"></div>
+    </div>
+     <nav class="footer-nav">
+            <a href="hrDashboard.html" class="footer-nav__item footer-nav__item--active">
+                <i class="fa-solid fa-house-chimney footer-nav__icon"></i>
+                <span class="footer-nav__text">Home</span>
+            </a>
+            <a href="hrattendance.html" class="footer-nav__item">
+                <i class="fa-solid fa-calendar-days footer-nav__icon"></i>
+                <span class="footer-nav__text">Attendance</span>
+            </a>
+            <a href="hrleave.html" class="footer-nav__item">
+                <i class="fa-solid fa-clipboard-list footer-nav__icon"></i>
+                <span class="footer-nav__text">Leave</span>
+            </a>
+            <a href="hrperformance.html" class="footer-nav__item">
+                <i class="fa-solid fa-chart-line footer-nav__icon"></i>
+                <span class="footer-nav__text">Performance</span>
+            </a>
+            <a href="hrprofile.html" class="footer-nav__item">
+                <i class="fa-solid fa-user footer-nav__icon"></i>
+                <span class="footer-nav__text">Profile</span>
+            </a>
+        </nav>
+
+    <script>
+        // Fill years dynamically (last 10 years)
+        const yearSelect = document.getElementById('year');
+        const currentYear = new Date().getFullYear();
+        for (let y = currentYear; y >= currentYear - 10; y--) {
+            const option = document.createElement('option');
+            option.value = y;
+            option.textContent = y;
+            yearSelect.appendChild(option);
+        }
+
+        async function fetchPayroll() {
+            const month = document.getElementById('month').value;
+            const year = document.getElementById('year').value;
+            const payrollDiv = document.getElementById('payrollInfo');
+            const errorDiv = document.getElementById('errorMsg');
+
+            payrollDiv.innerHTML = '';
+            errorDiv.textContent = '';
+
+            if (!month || !year) {
+                errorDiv.textContent = 'Please select both month and year.';
+                return;
+            }
+
+            // Get selected employee ID from localStorage
+            const empId = localStorage.getItem('selectedEmpId');
+            if (!empId) {
+                errorDiv.textContent = 'Employee ID not found. Please go back and select an employee.';
+                return;
+            }
+
+            try {
+                const res = await fetch(`https://hrms-project-8b8h.onrender.com/payroll/${empId}/${month}/${year}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!res.ok) {
+                    const errData = await res.json();
+                    throw new Error(errData.message || 'Failed to fetch payroll');
+                }
+
+                const data = await res.json();
+
+                payrollDiv.innerHTML = `
+          <p><strong>Month:</strong> ${data.month}</p>
+          <p><strong>Base Salary:</strong> ₹${data.baseSalary}</p>
+          <p><strong>Present Days:</strong> ${data.presentDays}</p>
+          <p><strong>Absent Days:</strong> ${data.absentDays}</p>
+          <p><strong>Late Days:</strong> ${data.lateDays}</p>
+          <p><strong>Bonus:</strong> ₹${data.bonus}</p>
+          <p><strong>Deductions:</strong> ₹${data.deductions}</p>
+          <p><strong>Net Salary:</strong> ₹${data.netSalary}</p>
+        `;
+            } catch (error) {
+                errorDiv.textContent = error.message;
+            }
+        }
+    </script>
+</body>
+
+</html>
